@@ -1,8 +1,9 @@
 package ch.bbw.manuel.coin;
 
+import org.bouncycastle.jcajce.provider.asymmetric.ec.KeyFactorySpi;
+
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 
 public class StringUtil {
     //aplies Sha256 to a string
@@ -21,5 +22,24 @@ public class StringUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static byte[] applyECDSASig(PrivateKey privateKey, String input) {
+        Signature dsa;
+        byte[] output = new byte[0];
+        try {
+            dsa = Signature.getInstance("ECDSA", "BC");
+            dsa.initSign(privateKey);
+            byte[] strByte = input.getBytes();
+            dsa.update(strByte);
+            output = dsa.sign();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output;
+    }
+
+    public static String getStringFromKey(PublicKey sender) {
+        return sender.toString();
     }
 }
