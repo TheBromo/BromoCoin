@@ -6,14 +6,25 @@ import java.util.ArrayList;
 
 public class ManuelChain {
     public static ArrayList<Block> blockchain = new ArrayList<Block>();
+    public static int difficulty = 5;
 
     public static void main(String[] args) {
         //add our blocks to the blockchain ArrayList:
         blockchain.add(new Block("Hi im the first block", "0"));
-        blockchain.add(new Block("Yo im the second block",blockchain.get(blockchain.size()-1).hash));
-        blockchain.add(new Block("Hey im the third block",blockchain.get(blockchain.size()-1).hash));
+        System.out.println("Mining 1. block");
+        blockchain.get(0).mineBlock(difficulty);
 
+        blockchain.add(new Block("Yo im the second block",blockchain.get(blockchain.size()-1).hash));
+        System.out.println("Mining 2. block");
+        blockchain.get(1).mineBlock(difficulty);
+
+        blockchain.add(new Block("Hey im the third block",blockchain.get(blockchain.size()-1).hash));
+        System.out.println("Mining 3. block");
+        blockchain.get(2).mineBlock(difficulty);
+
+        System.out.println("\nBlockchain is Valid: " + isChainValid());
         String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
+        System.out.println("\nThe Block chain");
         System.out.println(blockchainJson);
     }
 
